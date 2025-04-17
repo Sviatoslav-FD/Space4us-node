@@ -17,6 +17,10 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.options('/*', (_, res) => {
+  res.sendStatus(200);
+});
+
 const taskManagerRouter = require('./routes/task-manager')
 const countriesRouter = require('./routes/countries')
 
