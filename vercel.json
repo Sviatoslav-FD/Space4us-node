@@ -22,7 +22,7 @@
     {
       "src": "/(.*)",
       "dest": "app.js",
-      "methods": ["GET,OPTIONS,PATCH,DELETE,POST,PUT"],
+      "methods": ["GET","OPTIONS","PATCH","DELETE","POST","PUT"],
       "headers": {
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
