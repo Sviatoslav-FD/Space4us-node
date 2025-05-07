@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const fs = require('fs')
+const path = require('path')
 
 router.get('/', (req, res) => {
-    fs.readFile('tasks.json', 'utf8', function readFileCallback(err, data) {
+    fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
         if (err) {
             console.log(err);
             return;
@@ -14,7 +15,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/add', (req, res) => {
-    fs.readFile('tasks.json', 'utf8', function readFileCallback(err, data) {
+    fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
         if (err) {
             console.log(err);
             return;
@@ -23,9 +24,9 @@ router.post('/add', (req, res) => {
         const tasks = data ? JSON.parse(data) : []
         tasks.push(req.body)
         const json = JSON.stringify(tasks)
-        fs.writeFile('tasks.json', json, 'utf8', () => {
+        fs.writeFile(path.join(__dirname, '..', 'tasks.json'), json, 'utf8', () => {
             console.log('File written successfully');
-            fs.readFile('tasks.json', 'utf8', function readFileCallback(err, data) {
+            fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
                 if (err) {
                     console.log(err);
                     return;
@@ -38,7 +39,7 @@ router.post('/add', (req, res) => {
 })
 
 router.post('/edit', (req, res) => {
-    fs.readFile('tasks.json', 'utf8', function readFileCallback(err, data) {
+    fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
         if (err) {
             console.log(err);
             return;
@@ -48,9 +49,9 @@ router.post('/edit', (req, res) => {
         const taskIndex = tasks.findIndex(task => task.id === req.body.id)
         tasks.splice(taskIndex, 1, req.body)
         const json = JSON.stringify(tasks)
-        fs.writeFile('tasks.json', json, 'utf8', () => {
+        fs.writeFile(path.join(__dirname, '..', 'tasks.json'), json, 'utf8', () => {
             console.log('File written successfully');
-            fs.readFile('tasks.json', 'utf8', function readFileCallback(err, data) {
+            fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
                 if (err) {
                     console.log(err);
                     return;
@@ -63,7 +64,7 @@ router.post('/edit', (req, res) => {
 })
 
 router.delete('/delete/:id', (req, res) => {
-    fs.readFile('tasks.json', 'utf8', function readFileCallback(err, data) {
+    fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
         if (err) {
             console.log(err);
             return;
@@ -75,8 +76,8 @@ router.delete('/delete/:id', (req, res) => {
             tasks.splice(taskIndex, 1)
             const json = JSON.stringify(tasks)
 
-            fs.writeFile('tasks.json', json, 'utf8', () => {
-                fs.readFile('tasks.json', 'utf8', function readFileCallback(err, data) {
+            fs.writeFile(path.join(__dirname, '..', 'tasks.json'), json, 'utf8', () => {
+                fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
                     if (err) {
                         console.log(err);
                         return;
@@ -86,8 +87,8 @@ router.delete('/delete/:id', (req, res) => {
                 });    
             })
         } else {
-            fs.writeFile('tasks.json', '[]', 'utf8', () => {
-                fs.readFile('tasks.json', 'utf8', function readFileCallback(err, data) {
+            fs.writeFile(path.join(__dirname, '..', 'tasks.json'), '[]', 'utf8', () => {
+                fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
                     if (err) {
                         console.log(err);
                         return;
