@@ -2,104 +2,53 @@ const express = require('express')
 const router = express.Router()
 const fs = require('fs')
 const path = require('path')
+const Task = require('../models/task.model')
 
-router.get('/', (req, res) => {
-    fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        
-        res.json(data)
-    });    
+function catchError(res, message) {
+    res.status(500).json({ message })
+}
+
+router.get('/', async (req, res) => {
+    try {
+        const tasks = await Task.find({})
+        res.status(200).json(tasks)
+    } catch (err) {
+        catchError(res, err.message)
+    }
 })
 
-router.post('/add', (req, res) => {
-    fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        
-        const tasks = data ? JSON.parse(data) : []
-        tasks.push(req.body)
-        const json = JSON.stringify(tasks)
-        fs.writeFile(path.join(__dirname, '..', 'tasks.json'), json, 'utf8', () => {
-            console.log('File written successfully');
-            fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                
-                res.json(data)
-            });    
-        })
-    });
+router.post('/add', async (req, res) => {
+    try {
+        const task = await Task.create(req.body)
+        res.status(200).json(task)
+    } catch (err) {
+        catchError(res, err.message)
+    }
 })
 
-router.post('/edit', (req, res) => {
-    fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        
-        const tasks = data ? JSON.parse(data) : []
-        const taskIndex = tasks.findIndex(task => task.id === req.body.id)
-        tasks.splice(taskIndex, 1, req.body)
-        const json = JSON.stringify(tasks)
-        fs.writeFile(path.join(__dirname, '..', 'tasks.json'), json, 'utf8', () => {
-            console.log('File written successfully');
-            fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                
-                res.json(data)
-            });    
-        })
-    });
+router.put('/edit', async (req, res) => {
+    try {
+        const task = await Task.updateOne({ _id: req.body._id }, { $set: req.body })
+        res.status(200).json(task)
+    } catch (err) {
+        catchError(res, err.message)
+    }
 })
 
-router.delete('/delete/:id', (req, res) => {
-    fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        
-        if (req.params.id !== 'clear') {
-            const tasks = data ? JSON.parse(data) : []
-            const taskIndex = tasks.findIndex(task => task.id === req.params.id)
-            tasks.splice(taskIndex, 1)
-            const json = JSON.stringify(tasks)
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const id = req.params.id
 
-            fs.writeFile(path.join(__dirname, '..', 'tasks.json'), json, 'utf8', () => {
-                fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
-                    if (err) {
-                        console.log(err);
-                        return;
-                    }
-                    
-                    res.json(data)
-                });    
-            })
+        if (id && id !== 'clear') {
+            await Task.deleteOne({ id })
         } else {
-            fs.writeFile(path.join(__dirname, '..', 'tasks.json'), '[]', 'utf8', () => {
-                fs.readFile(path.join(__dirname, '..', 'tasks.json'), 'utf8', function readFileCallback(err, data) {
-                    if (err) {
-                        console.log(err);
-                        return;
-                    }
-                    
-                    res.json(data)
-                });    
-            })
+            await Task.deleteMany({})
         }
-
-    });    
+        
+        res.status(200).json({ message: 'Tasks deleted' })
+    } catch (err) {
+        catchError(res, err.message)
+    }
 })
 
 module.exports = router

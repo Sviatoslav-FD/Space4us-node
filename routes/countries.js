@@ -9,7 +9,6 @@ router.get('/', (req, res) => {
             res.json(error)
             return;
         }
-        console.log(data);
         
         res.json(data)
     });
