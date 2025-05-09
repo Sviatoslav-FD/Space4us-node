@@ -13,8 +13,7 @@ router.get('/', async (req, res) => {
         const tasks = await Task.find({})
         res.status(200).json(tasks)
     } catch (err) {
-        console.log(err);
-        catchError(res, err.message)
+        catchError(res, err)
     }
 })
 
