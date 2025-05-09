@@ -5,7 +5,7 @@ const path = require('path')
 const Task = require('../models/task.model')
 
 function catchError(res, message) {
-    res.status(500).json({ message })
+    res.status(500).json(message)
 }
 
 router.get('/', async (req, res) => {
