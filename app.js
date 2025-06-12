@@ -24,9 +24,13 @@ app.options('/*', (_, res) => {
 
 const taskManagerRouter = require('./routes/task-manager')
 const countriesRouter = require('./routes/countries')
+const wordsRouter = require('./routes/words')
+const dailyRouter = require('./routes/daily')
 
 app.use('/tasks', taskManagerRouter)
 app.use('/countries', countriesRouter)
+app.use('/words', wordsRouter)
+app.use('/daily', dailyRouter)
 
 process.on('uncaughtException', function (err) {
   console.log('Caught exception: ' + err);

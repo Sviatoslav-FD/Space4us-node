@@ -1,7 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const fs = require('fs')
-const path = require('path')
 const Task = require('../models/task.model')
 
 function catchError(res, message) {
@@ -38,11 +36,16 @@ router.put('/edit', async (req, res) => {
 router.delete('/delete/:id', async (req, res) => {
     try {
         const id = req.params.id
+        let result
 
         if (id && id !== 'clear') {
-            await Task.deleteOne({ id })
+            result = await Task.deleteOne({ id })
         } else {
             await Task.deleteMany({})
+        }
+
+        if (result && result.deletedCount === 0) {
+            return res.status(404).json({ message: 'Task not found' })
         }
         
         res.status(200).json({ message: 'Tasks deleted' })
