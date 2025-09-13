@@ -1,12 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const Daily = require('../models/daily.model')
+const { authenticateToken } = require('../middleware')
 
 function catchError(res, message) {
     res.status(500).json(message)
 }
 
-router.get('/', async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
     try {
         const tasks = await Daily.find({ date: req.query.date })
         res.status(200).json(tasks)
