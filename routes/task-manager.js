@@ -9,7 +9,9 @@ function catchError(res, message) {
 router.get('/', async (req, res) => {
     try {
         const tasks = await Task.find({})
-        res.status(200).json(tasks)
+        console.log(req.query.month, tasks[0].date.getMonth());
+        const filteredTasks = tasks.filter(task => task.date.getMonth() === parseInt(req.query.month))
+        res.status(200).json(filteredTasks)
     } catch (err) {
         catchError(res, err)
     }
@@ -17,8 +19,8 @@ router.get('/', async (req, res) => {
 
 router.post('/add', async (req, res) => {
     try {
-        const task = await Task.create(req.body)
-        res.status(200).json(task)
+        const tasks = await Task.insertMany(req.body)
+        res.status(200).json(tasks)
     } catch (err) {
         catchError(res, err.message)
     }
