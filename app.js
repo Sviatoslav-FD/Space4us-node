@@ -26,11 +26,13 @@ const taskManagerRouter = require('./routes/task-manager')
 const countriesRouter = require('./routes/countries')
 const wordsRouter = require('./routes/words')
 const authRouter = require('./routes/auth')
+const notesRouter = require('./routes/notes')
 
 app.use('/tasks', taskManagerRouter)
 app.use('/countries', countriesRouter)
 app.use('/words', wordsRouter)
 app.use('/auth', authRouter)
+app.use('/notes', notesRouter)
 
 process.on('uncaughtException', function (err) {
   console.log('Caught exception: ' + err);

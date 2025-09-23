@@ -1,19 +1,14 @@
 const express = require('express')
 const router = express.Router()
 const Task = require('../models/task.model')
+const { catchError } = require('../helpers')
 
-function catchError(res, message) {
-    res.status(500).json(message)
-}
-
-router.get('/', async (req, res) => {
+router.get('/', async (req, res) => {;
     try {
         const tasks = await Task.find({})
-        console.log(req.query.month, tasks[0].date.getMonth());
-        const filteredTasks = tasks.filter(task => task.date.getMonth() === parseInt(req.query.month))
-        res.status(200).json(filteredTasks)
+        res.status(200).json(tasks)
     } catch (err) {
-        catchError(res, err)
+        catchError(res, err.message)
     }
 })
 

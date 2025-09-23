@@ -1,10 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Word = require('../models/word.model')
-
-function catchError(res, message) {
-    res.status(500).json(message)
-}
+const { catchError } = require('../helpers')
 
 router.get('/', async (req, res) => {
     try {
