@@ -25,7 +25,7 @@ router.post('/add', async (req, res) => {
 
 router.put('/edit', async (req, res) => {
     try {
-        const note = await Note.updateOne({ _id: req.body._id }, { $set: req.body })
+        const note = await Note.updateOne({ id: req.body.id }, { $set: req.body })
         sendResponse(res, note)
     } catch (err) {
         catchError(res, err.message)
@@ -34,12 +34,12 @@ router.put('/edit', async (req, res) => {
 
 router.delete('/delete/:id', async (req, res) => {
     try {
-        const _id = new mongoose.Types.ObjectId(req.params.id)
+        const id = new mongoose.Types.ObjectId(req.params.id)
         
         let result
 
-        if (_id && _id !== 'clear') {
-            result = await Note.deleteOne({ _id })
+        if (id && id !== 'clear') {
+            result = await Note.deleteOne({ id })
         } else {
             await Note.deleteMany({})
         }

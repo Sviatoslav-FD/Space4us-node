@@ -23,7 +23,7 @@ router.post('/add', async (req, res) => {
 
 router.put('/edit', async (req, res) => {
     try {
-        const task = await Task.updateOne({ _id: req.body._id }, { $set: req.body })
+        const task = await Task.updateOne({ id: req.body.id }, { $set: req.body })
         res.status(200).json(task)
     } catch (err) {
         catchError(res, err.message)

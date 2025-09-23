@@ -27,12 +27,14 @@ const countriesRouter = require('./routes/countries')
 const wordsRouter = require('./routes/words')
 const authRouter = require('./routes/auth')
 const notesRouter = require('./routes/notes')
+const projectsRouter = require('./routes/projects')
 
 app.use('/tasks', taskManagerRouter)
 app.use('/countries', countriesRouter)
 app.use('/words', wordsRouter)
 app.use('/auth', authRouter)
 app.use('/notes', notesRouter)
+app.use('/projects', projectsRouter)
 
 process.on('uncaughtException', function (err) {
   console.log('Caught exception: ' + err);
@@ -45,7 +47,7 @@ process.on('unhandledRejection', function (err) {
 
 app.listen(port, () => console.log(`Space 4 us app listening on port ${port}`))
 
-const uri = "mongodb+srv://sviatoslavpanevnyk:hLTEOkqaA6J3XRuB@cluster0.napgf3x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = "mongodb+srv://sviatoslavpanevnyk:hLTEOkqaA6J3XRuB@cluster0.napgf3x.mongodb.net/space4us?retryWrites=true&w=majority&appName=Cluster0";
 mongoose.connect(uri)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err));
