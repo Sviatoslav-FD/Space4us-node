@@ -57,9 +57,13 @@ router.get('/profile', (req, res) => {
     if (!token) return res.sendStatus(401)
     
     jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
-        if (err) return res.sendStatus(403)
-        const { _id } = await User.findOne({ email: user.email })
-        res.json({ ...user, _id })
+        try {
+            if (err) return res.sendStatus(403)
+            const { _id } = await User.findOne({ email: user.email })
+            res.json({ ...user, _id })
+        } catch (err) {
+            res.status(400).json({ message: 'User not found' })
+        }
     })
 })
 

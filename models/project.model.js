@@ -11,8 +11,8 @@ const ProjectSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['backlog', 'week', 'in-progress', 'done'],
-    default: 'backlog',
+    enum: ['in-progress', 'archived', 'completed'],
+    default: 'in-progress',
   },
   createdAt: {
     type: Date,
@@ -30,6 +30,22 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  backlog: [{
+    type: {},
+    ref: 'Task',
+  }],
+  week: [{
+    type: {},
+    ref: 'Task',
+  }],
+  'in-progress': [{
+    type: {},
+    ref: 'Task',
+  }],
+  done: [{
+    type: {},
+    ref: 'Task',
+  }],
 })
 
 const Project = mongoose.model('Project', ProjectSchema)

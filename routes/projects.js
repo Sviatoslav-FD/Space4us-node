@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {;
 
 router.post('/add', async (req, res) => {
     try {
+        console.log(req.body);
         const projects = await Project.create(req.body)
         sendResponse(res, projects)
     } catch (err) {
@@ -48,6 +49,22 @@ router.delete('/delete/:id', async (req, res) => {
         }
         
         res.status(200).json({ message: 'Tasks deleted' })
+    } catch (err) {
+        catchError(res, err.message)
+    }
+})
+
+router.post('/tasks/add', async (req, res) => {
+    try {
+        const { projectId, status, formData } = req.body
+        const project = await Project.findById(projectId)
+        
+        if (!project) {
+            return res.status(404).json({ message: 'Project not found' })
+        }
+        project[status].push(formData)
+        await project.save()
+        sendResponse(res, project)
     } catch (err) {
         catchError(res, err.message)
     }

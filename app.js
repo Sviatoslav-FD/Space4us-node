@@ -22,14 +22,14 @@ app.options('/*', (_, res) => {
   res.sendStatus(200);
 });
 
-const taskManagerRouter = require('./routes/task-manager')
+const tasksRouter = require('./routes/tasks')
 const countriesRouter = require('./routes/countries')
 const wordsRouter = require('./routes/words')
 const authRouter = require('./routes/auth')
 const notesRouter = require('./routes/notes')
 const projectsRouter = require('./routes/projects')
 
-app.use('/tasks', taskManagerRouter)
+app.use('/tasks', tasksRouter)
 app.use('/countries', countriesRouter)
 app.use('/words', wordsRouter)
 app.use('/auth', authRouter)
