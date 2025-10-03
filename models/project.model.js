@@ -30,22 +30,10 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  backlog: [{
+  tasks: [{
     type: {},
     ref: 'Task',
-  }],
-  week: [{
-    type: {},
-    ref: 'Task',
-  }],
-  'in-progress': [{
-    type: {},
-    ref: 'Task',
-  }],
-  done: [{
-    type: {},
-    ref: 'Task',
-  }],
+  }]
 })
 
 const Project = mongoose.model('Project', ProjectSchema)

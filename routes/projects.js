@@ -54,20 +54,4 @@ router.delete('/delete/:id', async (req, res) => {
     }
 })
 
-router.post('/tasks/add', async (req, res) => {
-    try {
-        const { projectId, status, formData } = req.body
-        const project = await Project.findById(projectId)
-        
-        if (!project) {
-            return res.status(404).json({ message: 'Project not found' })
-        }
-        project[status].push(formData)
-        await project.save()
-        sendResponse(res, project)
-    } catch (err) {
-        catchError(res, err.message)
-    }
-})
-
 module.exports = router

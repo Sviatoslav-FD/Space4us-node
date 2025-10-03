@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {;
 
 router.post('/add', async (req, res) => {
     try {
-        const tasks = await Task.insertMany(req.body)
+        const tasks = await Task.create(req.body)
         res.status(200).json(tasks)
     } catch (err) {
         catchError(res, err.message)
@@ -46,6 +46,17 @@ router.delete('/delete/:id', async (req, res) => {
         }
         
         res.status(200).json({ message: 'Tasks deleted' })
+    } catch (err) {
+        catchError(res, err.message)
+    }
+})
+
+router.post('/move', async (req, res) => {
+    try {
+        const { _id, status } = req.body
+        
+        const task = await Task.updateOne({ _id }, { $set: { status } })
+        res.status(200).json(task)
     } catch (err) {
         catchError(res, err.message)
     }

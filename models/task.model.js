@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const TaskSchema = new mongoose.Schema({
+  projectId: {
+    type: String,
+    required: true,
+  },
   title: {
     type: String,
     required: true,
@@ -14,10 +18,12 @@ const TaskSchema = new mongoose.Schema({
     enum: ['backlog', 'week', 'in-progress', 'done'],
     default: 'backlog',
   },
-  projectId: {
-    type: String,
-    required: true,
+  weekStart: {
+    type: Date
   },
+  weekEnd: {
+    type: Date
+  }
 })
 
 const Task = mongoose.model('Task', TaskSchema)
