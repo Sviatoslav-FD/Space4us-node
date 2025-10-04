@@ -32,11 +32,11 @@ router.put('/edit', async (req, res) => {
 
 router.delete('/delete/:id', async (req, res) => {
     try {
-        const id = req.params.id
+        const _id = req.params.id
         let result
 
-        if (id && id !== 'clear') {
-            result = await Task.deleteOne({ id })
+        if (_id && _id !== 'clear') {
+            result = await Task.deleteOne({ _id })
         } else {
             await Task.deleteMany({})
         }
