@@ -9,6 +9,10 @@ const TaskSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  link: {
+    type: String,
+    required: false,
+  },
   description: {
     type: String,
     required: false,
@@ -18,11 +22,14 @@ const TaskSchema = new mongoose.Schema({
     enum: ['backlog', 'week', 'in-progress', 'done'],
     default: 'backlog',
   },
-  weekStart: {
+  dateStart: {
     type: Date
   },
-  weekEnd: {
+  dateEnd: {
     type: Date
+  },
+  list: {
+    type: Array
   }
 })
 
