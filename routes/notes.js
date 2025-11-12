@@ -15,9 +15,9 @@ router.get('/', async (_, res) => {
 
 router.post('/add', async (req, res) => {
     try {
-        console.log(req.body);
-        const note = await Note.create(req.body)
-        sendResponse(res, note)
+        await Note.create(req.body)
+        const notes = await Note.find({})
+        sendResponse(res, notes)
     } catch (err) {
         catchError(res, err.message)
     }

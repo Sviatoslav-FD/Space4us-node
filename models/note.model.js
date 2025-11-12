@@ -5,9 +5,13 @@ const NoteSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  content: {
+  text: {
     type: String,
-    required: true,
+    required: false,
+  },
+  list: {
+    type: Array,
+    required: false,
   },
   createdAt: {
     type: Date,
