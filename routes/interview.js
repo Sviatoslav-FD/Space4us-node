@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const Note = require('../models/note.model')
+const Question = require('../models/interview.model')
 const { sendResponse, catchError } = require('../helpers')
 const mongoose = require('mongoose')
 
 router.get('/', async (_, res) => {
     try {
-        const notes = await Note.find({})
-        sendResponse(res, notes)
+        const questions = await Question.find()
+        sendResponse(res, questions)
     } catch (err) {
         catchError(res, err)
     }
@@ -15,9 +15,9 @@ router.get('/', async (_, res) => {
 
 router.post('/add', async (req, res) => {
     try {
-        await Note.create(req.body)
-        const notes = await Note.find({})
-        sendResponse(res, notes)
+        await Question.create(req.body)
+        const questions = await Question.find()
+        sendResponse(res, questions)
     } catch (err) {
         catchError(res, err.message)
     }
@@ -26,8 +26,8 @@ router.post('/add', async (req, res) => {
 router.put('/edit', async (req, res) => {
     try {
         const _id = new mongoose.Types.ObjectId(req.body._id)
-        const note = await Note.updateOne({ _id }, { $set: req.body })
-        sendResponse(res, note)
+        const question = await Question.updateOne({ _id }, { $set: req.body })
+        sendResponse(res, question)
     } catch (err) {
         catchError(res, err.message)
     }
@@ -40,16 +40,16 @@ router.delete('/delete/:id', async (req, res) => {
         let result
 
         if (_id && _id !== 'clear') {
-            result = await Note.deleteOne({ _id })
+            result = await Question.deleteOne({ _id })
         } else {
-            await Note.deleteMany({})
+            await Question.deleteMany({})
         }
 
         if (result && result.deletedCount === 0) {
-            return sendResponse(res, { message: 'Note not found' }, 404)
+            return sendResponse(res, { message: 'Question not found' }, 404)
         }
         
-        sendResponse(res, { message: 'Notes deleted' })
+        sendResponse(res, { message: 'Questions deleted' })
     } catch (err) {
         catchError(res, err.message)
     }
