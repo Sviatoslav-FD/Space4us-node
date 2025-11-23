@@ -15,39 +15,39 @@ router.post('/register', async (req, res) => {
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const passwordHash = await bcrypt.hash(password, 10)
 
     // Create new user
-    const newUser = new User({ username, email, password: hashedPassword })
+    const newUser = new User({ username, email, passwordHash })
     await newUser.save()
 
     // Generate JWT token
     const token = jwt.sign({ username, email }, process.env.JWT_SECRET)
 
-    const user = await User.findOne({ email })
+    const { _id } = await User.findOne({ email })
 
-    res.json({ _id: user._id, token, username, email })
+    res.json({ _id, token, username, email })
 })
 
 router.post('/login', async (req, res) => {
-    const { _id, email, password } = req.body
+    const { email, password } = req.body
 
     // Find user by email
-    const user = await User.findOne({ _id, email })
-    if (!user) {
-        return res.status(400).json({ message: 'Invalid credentials' })
+    const { _id, passwordHash, username } = await User.findOne({ email })
+    if (!_id) {
+        return res.status(400).json({ message: 'User not found' })
     }
 
     // Compare password
-    const isMatch = await bcrypt.compare(password, user.password)
+    const isMatch = await bcrypt.compare(password, passwordHash)
     if (!isMatch) {
         return res.status(400).json({ message: 'Invalid credentials' })
     }
 
     // Generate JWT token
-    const token = jwt.sign({ username: user.username, email: user.email }, process.env.JWT_SECRET)
+    const token = jwt.sign({ username, email }, process.env.JWT_SECRET)
 
-    res.json({ _id: user._id, token, username: user.username, email: user.email })
+    res.json({ _id, token, username, email })
 })
 
 router.get('/profile', (req, res) => {
