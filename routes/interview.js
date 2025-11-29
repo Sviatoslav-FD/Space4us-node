@@ -26,8 +26,9 @@ router.post('/add', async (req, res) => {
 router.put('/edit', async (req, res) => {
     try {
         const _id = new mongoose.Types.ObjectId(req.body._id)
-        const question = await Question.updateOne({ _id }, { $set: req.body })
-        sendResponse(res, question)
+        await Question.updateOne({ _id }, { $set: req.body })
+        const questions = await Question.find()
+        sendResponse(res, questions)
     } catch (err) {
         catchError(res, err.message)
     }
@@ -49,7 +50,8 @@ router.delete('/delete/:id', async (req, res) => {
             return sendResponse(res, { message: 'Question not found' }, 404)
         }
         
-        sendResponse(res, { message: 'Questions deleted' })
+        const questions = await Question.find()
+        sendResponse(res, questions)
     } catch (err) {
         catchError(res, err.message)
     }

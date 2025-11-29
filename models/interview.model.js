@@ -3,12 +3,17 @@ const mongoose = require('mongoose')
 const QuestionSchema = new mongoose.Schema({
   question: {
     type: String,
-    required: false,
+    required: true,
     trim: true,
   },
   answer: {
     type: String,
-    required: false,
+    required: true,
+    trim: true,
+  },
+  category: {
+    type: String,
+    required: true,
     trim: true,
   },
   createdAt: {
