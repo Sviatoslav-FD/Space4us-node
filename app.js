@@ -29,6 +29,7 @@ const authRouter = require('./routes/auth')
 const notesRouter = require('./routes/notes')
 const projectsRouter = require('./routes/projects')
 const interviewRouter = require('./routes/interview')
+const dailyRouter = require('./routes/daily')
 
 
 app.use('/tasks', tasksRouter)
@@ -38,6 +39,7 @@ app.use('/auth', authRouter)
 app.use('/notes', notesRouter)
 app.use('/projects', projectsRouter)
 app.use('/interview', interviewRouter)
+app.use('/daily', dailyRouter)
 
 process.on('uncaughtException', function (err) {
   console.log('Caught exception: ' + err);

@@ -1,57 +1,14 @@
 const express = require('express')
-const mongoose = require('mongoose')
 const router = express.Router()
-const Project = require('../models/project.model')
-const { sendResponse, catchError } = require('../helpers')
+const Model = require('../models/project.model')
+const { get, add, edit, remove } = require('../helpers')
 
-router.get('/', async (req, res) => {;
-    try {
-        const projects = await Project.find({})
-        sendResponse(res, projects)
-    } catch (err) {
-        catchError(res, err.message)
-    }
-})
+router.get('/', (req, res) => get(req, res, Model))
 
-router.post('/add', async (req, res) => {
-    try {
-        console.log(req.body);
-        const projects = await Project.create(req.body)
-        sendResponse(res, projects)
-    } catch (err) {
-        catchError(res, err.message)
-    }
-})
+router.post('/add', (req, res) => add(req, res, Model))
 
-router.put('/edit', async (req, res) => {
-    try {
-        const _id = new mongoose.Types.ObjectId(req.body._id)
-        const project = await Project.updateOne({ _id }, { $set: req.body })
-        sendResponse(res, project)
-    } catch (err) {
-        catchError(res, err.message)
-    }
-})
+router.put('/edit', (req, res) => edit(req, res, Model))
 
-router.delete('/delete/:id', async (req, res) => {
-    try {
-        const _id = new mongoose.Types.ObjectId(req.params.id)
-        let result
-
-        if (_id && _id !== 'clear') {
-            result = await Project.deleteOne({ _id })
-        } else {
-            await Project.deleteMany({})
-        }
-
-        if (result && result.deletedCount === 0) {
-            return res.status(404).json({ message: 'Project not found' })
-        }
-        
-        res.status(200).json({ message: 'Tasks deleted' })
-    } catch (err) {
-        catchError(res, err.message)
-    }
-})
+router.delete('/delete/:id', (req, res) => remove(req, res, Model))
 
 module.exports = router

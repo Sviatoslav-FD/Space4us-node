@@ -23,6 +23,6 @@ const ModelSchema = new mongoose.Schema({
   },
 })
 
-const Model = mongoose.model('Note', ModelSchema)
+const Model = mongoose.model('Daily', ModelSchema)
 
 module.exports = Model

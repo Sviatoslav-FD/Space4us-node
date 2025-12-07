@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Model = require('../models/note.model')
+const Model = require('../models/daily.model')
 const { get, add, edit, remove } = require('../helpers')
 
 router.get('/', (req, res) => get(req, res, Model))
